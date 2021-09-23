@@ -1,0 +1,46 @@
+.container {
+  :global {
+    .ant-modal .ant-modal-content .ant-modal-body {
+      max-height: 500px;
+      padding-left: 0;
+      overflow: auto;
+    }
+    .ant-form .ant-form-item {
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+      :local {
+        .banner-box,
+        .descurl-box {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 24px 10px;
+          border: 1px solid #d9d9d9;
+          border-radius: 2px;
+          .upload-box {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 24px;
+            :global(.anticon-minus-circle) {
+              margin: 0 8px;
+              color: #999;
+              font-size: 21px;
+              cursor: pointer;
+              transition: all 0.3s;
+              &:hover {
+                color: #777;
+              }
+            }
+          }
+        }
+      }
+      .ant-input-number {
+        width: 100%;
+      }
+    }
+  }
+}

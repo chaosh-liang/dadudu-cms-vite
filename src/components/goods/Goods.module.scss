@@ -1,0 +1,128 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  :global {
+    .ant-btn-link {
+      padding: 4px 5px;
+    }
+    .ant-table {
+      .ant-table-thead tr th:nth-last-child(2) {
+        text-align: center !important;
+      }
+    }
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    .title {
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+  .section {
+    flex: 1;
+  }
+  .phone-emulator {
+    width: 375px;
+    height: 812px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    border: 1px solid #d9d9d9;
+    background-color: #edf0f2;
+    position: relative;
+    :global {
+      .ant-carousel .slick-dots li {
+        background-color: #bfbfbf;
+        &.slick-active {
+          button {
+            background-color: #eb2f96;
+          }
+        }
+      }
+    }
+    .carousel-box {
+      position: relative;
+      height: 375px;
+      .carousel-trigger {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 100%;
+        z-index: 5;
+        font-size: 19px;
+        line-height: 30px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, .2);
+        color: rgba(0, 0, 0, .5);
+        cursor: pointer;
+        &.left {
+          left: 10px;
+        }
+        &.right {
+          right: 10px;
+        }
+        &:hover {
+          background-color: rgba(0, 0, 0, .4);
+        }
+      }
+      .carousel-item {
+        height: 100%;
+        img {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .price-area {
+      padding: 5px;
+      margin-bottom: 15px;
+      background-color: #fff;
+      .price-info {
+        .price {
+          font-size: 19px;
+          font-weight: 600;
+          color: rgb(239, 14, 59);
+        }
+        .unit {
+          font-size: 12px;
+          color: #6c6c6c;
+          margin-left: 3px;
+        }
+      }
+      .price-discount {
+        font-size: 12px;
+        color: #6c6c6c;
+        margin-left: 3px;
+      }
+      .desc {
+        font-size: 16px;
+        color: #333;
+        margin-top: 10px;
+      }
+    }
+    .desc-box {
+      padding: 5px;
+      box-sizing: border-box;
+      background-color: #fff;
+      .img-wrapper {
+        width: 100%;
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}

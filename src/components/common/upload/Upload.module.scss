@@ -1,0 +1,41 @@
+.upload {
+  width: 100%;
+  max-width: 1000px;
+  .layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .label {
+      width: 100px;
+      font-size: 14px;
+      line-height: 30px;
+      margin-right: 10px;
+    }
+    .iput-group {
+      flex: 1;
+      min-width: 150px;
+      margin-right: 10px;
+      .icon-file {
+        display: none;
+      }
+      :global(.ant-input) {
+        height: 30px;
+        line-height: 30px;
+        cursor: not-allowed;
+      }
+    }
+    .btn-group {
+      line-height: 30px;
+      :global {
+        .ant-btn + .ant-btn {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
