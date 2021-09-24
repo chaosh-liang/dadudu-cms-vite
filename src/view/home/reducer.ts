@@ -1,25 +1,25 @@
-import { ActionType } from '@/store/action_type';
-import type { AnyAction, Reducer } from 'redux';
+import { ActionType } from '@/store/action_type'
+import type { AnyAction, Reducer } from 'redux'
 
 const initState = {
-  category: [], // 类别数据
-};
+  category: [] // 类别数据
+}
 
 const reducer: Reducer<typeof initState, AnyAction> = (
   state = initState,
   action
 ) => {
-  const { type, payload = {} } = action;
+  const { type, payload = {} } = action
   switch (type) {
     case ActionType.SET_CATEGORY_DATA: {
-      const { data } = payload;
+      const { data } = payload
       // console.log('SET_CATEGORY_DATA');
-      if (data) return { ...state, category: data };
-      return state;
+      if (data) return { ...state, category: data }
+      return state
     }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default reducer;
+export default reducer

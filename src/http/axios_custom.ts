@@ -1,32 +1,38 @@
-import { message } from 'antd';
-import axios, { AxiosResponse, AxiosInstance } from 'axios';
+import { message } from 'antd'
+import axios, { AxiosResponse, AxiosInstance } from 'axios'
 
-const TIMEOUT = 10000;
-const baseURL = process.env.NODE_ENV === 'production' ? '/cms/dadudu' : '';
+const TIMEOUT = 10000
+const baseURL = process.env.NODE_ENV === 'production' ? '/cms/dadudu' : ''
 
 class CustomAxios {
-  private static instance: CustomAxios;
-  private axiosInst: AxiosInstance;
+  private static instance: CustomAxios
+  private axiosInst: AxiosInstance
 
   private constructor() {
     // withCredentials: 带上 cookie。也可以在 interceptors.request 设置规则
-    this.axiosInst = axios.create({ baseURL, timeout: TIMEOUT, withCredentials: true });
-    this.setAxiosInterceptors();
+    this.axiosInst = axios.create({
+      baseURL,
+      timeout: TIMEOUT,
+      withCredentials: true
+    })
+    this.setAxiosInterceptors()
   }
-  
+
   // CustomAxios 单例模式
   public static getInstance() {
     if (!CustomAxios.instance) {
-      CustomAxios.instance = new CustomAxios();
+      CustomAxios.instance = new CustomAxios()
     }
-    return CustomAxios.instance;
+    return CustomAxios.instance
   }
-  
+
   // 初始化拦截器
   private setAxiosInterceptors() {
     // 设置请求头
-    this.axiosInst.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-    this.axiosInst.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+    this.axiosInst.defaults.headers.get['Content-Type'] =
+      'application/x-www-form-urlencoded;charset=utf-8'
+    this.axiosInst.defaults.headers.post['Content-Type'] =
+      'application/json;charset=utf-8'
 
     // 请求拦截器
     /* this.axiosInst.interceptors.request.use(config => {
@@ -47,25 +53,25 @@ class CustomAxios {
       (res: AxiosResponse) => {
         // LoadingInstance.close();
         if (res.status === 200) {
-          return Promise.resolve(res.data);
+          return Promise.resolve(res.data)
         }
-        return Promise.reject(res);
+        return Promise.reject(res)
       },
       // 请求失败
       (error: any) => {
-        const { response } = error;
+        const { response } = error
         if (response) {
           // 请求已发出，但是不在2xx的范围
-          this.errorHandle(response);
+          this.errorHandle(response)
         }
-        return Promise.reject(error);
+        return Promise.reject(error)
       }
-    );
+    )
   }
 
   // axios 实例
   public getAxiosInstance() {
-    return this.axiosInst;
+    return this.axiosInst
   }
 
   /**
@@ -79,26 +85,28 @@ class CustomAxios {
         // console.error('401');
         if (!window.author401) {
           window.author401 = message.error('请重新登录', 4, () => {
-          window.author401 = null;
-          const { location: { origin } } = window;
-          window.location.href = `${origin}/#/login`; // 登录界面
-        });
-      }
-        break;
+            window.author401 = null
+            const {
+              location: { origin }
+            } = window
+            window.location.href = `${origin}/#/login` // 登录界面
+          })
+        }
+        break
       case 403: // 密码过期/此接口无权限
-        console.error('无权限');
-        break;
+        console.error('无权限')
+        break
       case 500:
-        console.error('服务器错误');
-        break;
+        console.error('服务器错误')
+        break
       default:
-        console.error('服务器错误');
-        break;
+        console.error('服务器错误')
+        break
     }
   }
 }
 
 // 工厂模式
-const createAxios = () => CustomAxios.getInstance().getAxiosInstance();
+const createAxios = () => CustomAxios.getInstance().getAxiosInstance()
 
-export default createAxios;
+export default createAxios

@@ -1,14 +1,14 @@
-import createAxios from './axios_custom';
-import type { LocalResponseType } from '@/@types/shared';
+import createAxios from './axios_custom'
+import type { LocalResponseType } from '@/@types/shared'
 export default class Service {
-  private axios: any;
+  private axios: any
 
   constructor() {
-    this.axios = createAxios();
+    this.axios = createAxios()
   }
 
   /**
-   * 
+   *
    * @returns axios 实例
    * @note 此方法用来测试 axios 是否为单例
    * @note 在某个地方创建两个 Service 类的实例，如
@@ -18,7 +18,7 @@ export default class Service {
    *  console.log(service1.getAxiosInst() === service2.getAxiosInst());
    */
   public getAxiosInst() {
-    return this.axios;
+    return this.axios
   }
 
   public getData(url: string, params?: any) {
@@ -26,12 +26,12 @@ export default class Service {
       this.axios
         .get(url, params)
         .then((res: any) => {
-          resolve(res);
+          resolve(res)
         })
         .catch((err: any) => {
-          reject(err.message);
-        });
-    });
+          reject(err.message)
+        })
+    })
   }
 
   public postData(url: string, params: any) {
@@ -39,12 +39,12 @@ export default class Service {
       this.axios
         .post(url, params)
         .then((res: any) => {
-          resolve(res);
+          resolve(res)
         })
         .catch((err: any) => {
-          reject(err.message);
-        });
-    });
+          reject(err.message)
+        })
+    })
   }
 
   public putData(url: string, params: any) {
@@ -52,12 +52,12 @@ export default class Service {
       this.axios
         .put(url, params)
         .then((res: any) => {
-          resolve(res);
+          resolve(res)
         })
         .catch((err: any) => {
-          reject(err.message);
-        });
-    });
+          reject(err.message)
+        })
+    })
   }
 
   public delData(url: string, params: any) {
@@ -65,11 +65,11 @@ export default class Service {
       this.axios
         .delete(url, params)
         .then((res: any) => {
-          resolve(res);
+          resolve(res)
         })
         .catch((err: any) => {
-          reject(err.message);
-        });
-    });
+          reject(err.message)
+        })
+    })
   }
 }

@@ -1,16 +1,16 @@
-import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
-import App from '@/view/app/App';
-import Login from '@/view/login/Login';
-import AuthorRoute from '@/components/common/author/Author_route';
-import store from '@/store';
+import React, { Suspense } from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
+import App from '@/view/app/App'
+import Login from '@/view/login/Login'
+import AuthorRoute from '@/components/common/author/Author_route'
+import store from '@/store'
 
-import './index.css';
-import 'antd/dist/antd.min.css';
-import '@/assets/scss/common.scss';
-import '@/assets/scss/antd.override.scss';
+import './index.css'
+import 'antd/dist/antd.min.css'
+import '@/assets/scss/common.scss'
+import '@/assets/scss/antd.override.scss'
 
 const RenderJsx = () => (
   <Provider store={store}>
@@ -29,7 +29,7 @@ const RenderJsx = () => (
               color: 'rgba(0, 0, 0, .65)',
               paddingTop: '40px',
               boxSizing: 'border-box',
-              backgroundColor: '#f0f2f5',
+              backgroundColor: '#f0f2f5'
             }}
           >
             应用加载异常，请检查网络或联系管理员
@@ -38,14 +38,14 @@ const RenderJsx = () => (
       >
         <Switch>
           {/* 没有 exact 表示，此路由不管是否有子路由或参数，都渲染这个组件 */}
-          <Route path='/login' render={(props) => <Login {...props} />} />
-          <AuthorRoute path='/app' component={App} />
-          <Redirect to='/login' /> 顶级路由不匹配时跳转至登录页
+          <Route path="/login" render={(props) => <Login {...props} />} />
+          <AuthorRoute path="/app" component={App} />
+          <Redirect to="/login" /> 顶级路由不匹配时跳转至登录页
         </Switch>
       </Suspense>
     </HashRouter>
   </Provider>
-);
+)
 
 // 挂载
 ReactDOM.render(
@@ -58,4 +58,4 @@ ReactDOM.render(
     <RenderJsx />
   ),
   document.getElementById('root')
-);
+)

@@ -1,0 +1,12 @@
+# Ignore artifacts:
+# Ignore all files in node_modules directory
+# except src directory
+
+.DS_Store
+node_modules
+dist
+build
+**/*.js
+**/*.ts
+**/*.json
+!src/*

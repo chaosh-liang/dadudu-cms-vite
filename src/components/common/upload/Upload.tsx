@@ -1,25 +1,25 @@
-import React, { FC, useRef, useState } from 'react';
-import { Button, Input, message } from 'antd';
-import { CloudUploadOutlined } from '@ant-design/icons';
-import styles from './Upload.module.scss';
-import { upload } from '@/api/shared';
+import React, { FC, useRef, useState } from 'react'
+import { Button, Input, message } from 'antd'
+import { CloudUploadOutlined } from '@ant-design/icons'
+import styles from './Upload.module.scss'
+import { upload } from '@/api/shared'
 interface LocalProps {
-  filePath?: string;
-  labelWidth?: number;
-  maxSize?: number;
-  labelText?: string;
-  uploadSuccess?: (...args: any[]) => any;
+  filePath?: string
+  labelWidth?: number
+  maxSize?: number
+  labelText?: string
+  uploadSuccess?: (...args: any[]) => any
 }
 
 const Upload: FC<LocalProps> = (props) => {
-  const fileInputEl = useRef<HTMLInputElement | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+  const fileInputEl = useRef<HTMLInputElement | null>(null)
+  const [file, setFile] = useState<File | null>(null)
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false)
 
   // 触发-选取图片
   const pickupFile = () => {
-    fileInputEl.current?.click();
-  };
+    fileInputEl.current?.click()
+  }
 
   // 选取图片
   /* interface HTMLInputEvent extends Event {
@@ -29,39 +29,39 @@ const Upload: FC<LocalProps> = (props) => {
   */
   const fileChangeEvent = (ev: any) => {
     // console.log('fileChangeEvent => ', ev);
-    const imgFile = ev?.target?.files?.[0];
+    const imgFile = ev?.target?.files?.[0]
     if (imgFile) {
-      const { size, type } = imgFile;
-      const typeReg = /(png|jpe?g|webp|gif)$/;
+      const { size, type } = imgFile
+      const typeReg = /(png|jpe?g|webp|gif)$/
       if (!typeReg.test(type)) {
-        message.error('请上传以下格式的图片：jpg/jpeg/png/webp/gif');
+        message.error('请上传以下格式的图片：jpg/jpeg/png/webp/gif')
       } else if (props.maxSize && size / 1000 > props.maxSize) {
-        message.error(`大小不超过 ${props.maxSize}kb`);
+        message.error(`大小不超过 ${props.maxSize}kb`)
       } else {
-        setFile(imgFile); // 保存文件对象
-        message.info('图片准备就绪');
+        setFile(imgFile) // 保存文件对象
+        message.info('图片准备就绪')
       }
     }
-  };
+  }
   // 上传文件到服务器
   const uploadFile = async () => {
     if (file) {
-      const formData = new FormData();
-      formData.append('picture', file);
-      setUploadLoading(true);
+      const formData = new FormData()
+      formData.append('picture', file)
+      setUploadLoading(true)
 
-      const result = await upload(formData);
-      setUploadLoading(false);
+      const result = await upload(formData)
+      setUploadLoading(false)
       if (result?.error_code === '00') {
-        const path = result.data?.res ?? '';
-        setFile(null);
+        const path = result.data?.res ?? ''
+        setFile(null)
         // 先执行组件内的操作(setFile(null))，然后执行父组件操作(callback)
         // 否则，本组件内无原因自己更新状态，就会警告内存泄漏，而不进行操作 no-op
-        message.success('图片上传成功');
-        if (props.uploadSuccess) props.uploadSuccess(path);
+        message.success('图片上传成功')
+        if (props.uploadSuccess) props.uploadSuccess(path)
       }
     }
-  };
+  }
   return (
     <div className={styles.upload}>
       <div className={styles.layout}>
@@ -79,24 +79,24 @@ const Upload: FC<LocalProps> = (props) => {
             className={styles['icon-name']}
             value={props.filePath}
             readOnly
-            placeholder='请先上传服务器'
+            placeholder="请先上传服务器"
           />
           <input
-            type='file'
+            type="file"
             className={styles['icon-file']}
             ref={fileInputEl}
             onChange={fileChangeEvent}
-            accept='image/jpeg, image/png, image/gif'
+            accept="image/jpeg, image/png, image/gif"
           />
         </div>
         <div className={styles['btn-group']}>
-          <Button type='primary' size='small' onClick={pickupFile}>
+          <Button type="primary" size="small" onClick={pickupFile}>
             选择图片
           </Button>
           {!!file ? (
             <Button
-              type='primary'
-              size='small'
+              type="primary"
+              size="small"
               icon={<CloudUploadOutlined />}
               loading={uploadLoading}
               onClick={uploadFile}
@@ -107,11 +107,11 @@ const Upload: FC<LocalProps> = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 Upload.defaultProps = {
-  filePath: '',
-};
+  filePath: ''
+}
 
-export default Upload;
+export default Upload

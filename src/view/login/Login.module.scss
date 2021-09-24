@@ -26,9 +26,13 @@
     .ant-form {
       width: 80%;
       .ant-form-item {
-        &:last-child { margin-bottom: 0; }
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
-      .ant-btn { width: 100%; }
+      .ant-btn {
+        width: 100%;
+      }
     }
   }
 }
