@@ -8,7 +8,7 @@ import AuthorRoute from '@/components/common/author/Author_route'
 import store from '@/store'
 
 import './index.css'
-import 'antd/dist/antd.min.css'
+if (process.env.NODE_ENV === 'development') await import('antd/dist/antd.css') // 生产环境使用 cdn
 import '@/assets/scss/common.scss'
 import '@/assets/scss/antd.override.scss'
 

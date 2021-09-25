@@ -3,6 +3,7 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import viteCompression from 'vite-plugin-compression' // 生成 gzip 文件
+import { minifyHtml, injectHtml } from 'vite-plugin-html'
 
 // 开发代理设置
 const setProxy = () => {
@@ -29,7 +30,19 @@ const setProxy = () => {
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
-  plugins: [reactRefresh(), viteCompression()],
+  plugins: [
+    reactRefresh(),
+    viteCompression(),
+    minifyHtml(),
+    injectHtml({
+      data: {
+        injectLink:
+          process.env.NODE_ENV === 'production'
+            ? '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">'
+            : ''
+      }
+    })
+  ],
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './'),
