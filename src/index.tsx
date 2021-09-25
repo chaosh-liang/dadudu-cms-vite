@@ -40,7 +40,8 @@ const RenderJsx = () => (
           {/* 没有 exact 表示，此路由不管是否有子路由或参数，都渲染这个组件 */}
           <Route path="/login" render={(props) => <Login {...props} />} />
           <AuthorRoute path="/app" component={App} />
-          <Redirect to="/login" /> 顶级路由不匹配时跳转至登录页
+          {/* 顶级路由不匹配时跳转至登录页 */}
+          <Redirect to="/login" />
         </Switch>
       </Suspense>
     </HashRouter>

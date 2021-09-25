@@ -8,10 +8,10 @@ import {
 import type { Store } from 'redux'
 import reducer from './reducer'
 import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly' // 开发环境
 
 const initReducer = combineReducers(reducer)
-const composeEnhancers = composeWithDevTools({ name: '大嘟嘟' })
+const composeEnhancers = composeWithDevTools({ name: '大都督' })
 const store = createStore(initReducer, composeEnhancers(applyMiddleware(thunk)))
 
 // 保存已注入的 reducer

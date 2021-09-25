@@ -46,7 +46,8 @@
     "redux-devtools-extension": "^2.13.9",
     "sass": "^1.42.1",
     "typescript": "^4.3.2",
-    "vite": "^2.5.10"
+    "vite": "^2.5.10",
+    "vite-plugin-compression": "^0.3.5"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",

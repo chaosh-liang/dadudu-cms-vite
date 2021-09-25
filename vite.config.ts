@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
+import viteCompression from 'vite-plugin-compression' // 生成 gzip 文件
 
 // 开发代理设置
 const setProxy = () => {
@@ -28,7 +29,7 @@ const setProxy = () => {
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
-  plugins: [reactRefresh()],
+  plugins: [reactRefresh(), viteCompression()],
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './'),
