@@ -52,18 +52,18 @@ const App: FC<RouteComponentProps> = () => {
     setCurRoute(t_pathname)
   }, [location])
 
-  // 注销登录
+  // 退出登录
   const handleLogout = () => {
     Modal.confirm({
       title: '提示',
       icon: <ExclamationCircleOutlined />,
-      content: '确定要注销登录吗？',
+      content: '确定要退出登录吗？',
       okText: '确定',
       cancelText: '取消',
       async onOk() {
         const res = await logout()
         if (res?.error_code === '00') {
-          setTimeout(() => history.push('/login'), 500) // 反应太快，导致：已经切到 login 页面了，注销提示框还没消失
+          setTimeout(() => history.push('/login'), 500) // 反应太快，导致：已经切到 login 页面了，退出登录提示框还没消失
         }
       }
     })
@@ -83,7 +83,7 @@ const App: FC<RouteComponentProps> = () => {
             })}
           </Menu>
           <Button type="link" onClick={handleLogout}>
-            注销
+            退出
           </Button>
         </Header>
         <Content className={styles.main} style={{ height: `${mainvh}px` }}>
