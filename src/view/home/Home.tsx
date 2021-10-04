@@ -10,10 +10,15 @@ import {
 } from 'react-router-dom'
 import { Layout, Menu, Spin } from 'antd'
 import { useMount } from 'ahooks'
-import { PieChartOutlined, DesktopOutlined } from '@ant-design/icons'
+import {
+  BarsOutlined,
+  PartitionOutlined,
+  DeleteOutlined
+} from '@ant-design/icons'
 import Goods from '@/components/goods/Goods'
 import Category from '@/components/category/Category'
 import Series from '@/components/series/Series'
+import Recycle from '@/components/recycle/Recycle'
 import styles from './Home.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import store, { injectReducer } from '@/store'
@@ -39,12 +44,17 @@ const Home: FC<RouteComponentProps> = () => {
     {
       name: '商品列表',
       route: `${path}/goods`,
-      icon: <PieChartOutlined />
+      icon: <BarsOutlined />
     },
     {
       name: '商品类别',
       route: `${path}/category`,
-      icon: <DesktopOutlined />
+      icon: <PartitionOutlined />
+    },
+    {
+      name: '回收站',
+      route: `${path}/recycle`,
+      icon: <DeleteOutlined />
     }
   ]
 
@@ -85,6 +95,11 @@ const Home: FC<RouteComponentProps> = () => {
               exact
               path={`${path}/category`}
               render={(props) => <Category {...props} />}
+            />
+            <Route
+              exact
+              path={`${path}/recycle`}
+              render={(props) => <Recycle {...props} />}
             />
             <Route
               exact
