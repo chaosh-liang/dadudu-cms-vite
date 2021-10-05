@@ -41,7 +41,8 @@ const Goods: FC<RouteComponentProps> = () => {
     category_id: '',
     icon_url: '',
     desc_url: [''],
-    banner_url: ['']
+    banner_url: [''],
+    deleted: 0
   }
   const [gt, setGt] = useState(0) // 为了触发获取商品请求
   const [page_index, setPageIndex] = useState(1)
@@ -73,20 +74,12 @@ const Goods: FC<RouteComponentProps> = () => {
             home_banner,
             home_display,
             create_time,
-            update_time,
-            series_data: {
-              0: { name: series_name }
-            },
-            category_data: {
-              0: { name: category_name }
-            }
+            update_time
           } = item
           return {
             ...item,
             key,
             sequence,
-            series_name,
-            category_name,
             is_home_banner: home_banner ? '是' : '否',
             is_home_display: home_display ? '是' : '否',
             create_time: create_time && formatDate(create_time),

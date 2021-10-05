@@ -6,6 +6,8 @@ export interface GoodsT extends Record<string, any> {
   price: number
   series_id: string
   category_id: string
+  series_name?: string
+  category_name?: string
   home_banner: boolean
   discount_price: number
   discount_threshold: number

@@ -1,0 +1,36 @@
+.container {
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  :global {
+    .ant-btn-link {
+      padding: 4px 5px;
+    }
+    .ant-table {
+      .ant-table-thead tr th:nth-last-child(2) {
+        text-align: center !important;
+      }
+    }
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    .title {
+      margin: 0;
+      font-weight: 600;
+    }
+  }
+  .section {
+    flex: 1;
+  }
+}
