@@ -1,17 +1,44 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { Button, Space, Table } from 'antd'
+import { Button, Modal, Space, Table, Form, Select, Input, message } from 'antd'
 import styles from './Order.module.scss'
 import { useRequest } from 'ahooks'
-import { fetchOrder } from '@/api/order'
-import type { GoodsT } from '@/@types/goods'
+import { fetchOrder, updateOrder } from '@/api/order'
 import { formatDate } from '@/utils'
 import type { ColumnType } from 'rc-table/lib/interface'
+import type { IOrder } from '@/@types/order'
 
 const Order: FC<RouteComponentProps> = () => {
   const [gt, setGt] = useState(0) // 为了触发获取商品请求
   const [page_index, setPageIndex] = useState(1)
   const [page_size, setPageSize] = useState(10)
+  const [mVisible, setMVisible] = useState(false)
+
+  // 表单实例，维护表单字段和状态
+  const [form] = Form.useForm()
+  const defaultFormData = {
+    user_id: '',
+    goods_id: '',
+    goods_name: '',
+    gcount: 1,
+    status: 1,
+    order_status: '待付款',
+    actual_pay: 1,
+    currency_unit: '',
+    create_time: '',
+    order_id: '',
+    user_name: ''
+  }
+  // 表单数据
+  const [formData, setFormData] = useState<IOrder>(defaultFormData)
+
+  useEffect(() => {
+    // console.log('series useEffect');
+    if (mVisible) {
+      form.setFieldsValue({ ...formData })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mVisible])
 
   // 获取所有商品
   const { data, loading: fetchOrderLoading } = useRequest(
@@ -22,16 +49,16 @@ const Order: FC<RouteComponentProps> = () => {
       formatResult({ data: { res, total, page_index, page_size } }) {
         // 格式化接口返回的数据
         // console.log('formatResult => ', res)
-        const order = res.map((item: GoodsT, index: number) => {
+        const order = res.map((item: IOrder, index: number) => {
           const sequence = `0${(page_index - 1) * page_size + index + 1}`.slice(
             -2
           ) // 序号
-          const { _id: key, status, create_time } = item
+          const { order_id: key, status, create_time } = item
           return {
             ...item,
             key,
             sequence,
-            status: status && statusMapping(status),
+            order_status: status && statusMapping(status),
             create_time: create_time && formatDate(create_time)
           }
         })
@@ -59,7 +86,7 @@ const Order: FC<RouteComponentProps> = () => {
   }
 
   // 表格列定义
-  const columns: ColumnType<Required<GoodsT>>[] = [
+  const columns: ColumnType<Required<IOrder>>[] = [
     {
       title: '序号',
       dataIndex: 'sequence',
@@ -73,14 +100,14 @@ const Order: FC<RouteComponentProps> = () => {
       width: 200
     },
     {
-      title: '订单ID',
+      title: '订单编号',
       dataIndex: 'order_id',
       align: 'center',
       width: 200
     },
     {
       title: '订单状态',
-      dataIndex: 'status',
+      dataIndex: 'order_status',
       align: 'center',
       width: 100
     },
@@ -89,7 +116,7 @@ const Order: FC<RouteComponentProps> = () => {
       dataIndex: 'actual_pay',
       align: 'center',
       width: 100,
-      render: (text: string, record: Required<GoodsT>) => (
+      render: (text: string, record: Required<IOrder>) => (
         <div>
           <span>{record.currency_unit}</span>
           <span>{text}</span>
@@ -119,12 +146,12 @@ const Order: FC<RouteComponentProps> = () => {
       key: 'action',
       align: 'center',
       width: 150,
-      render: (text: string, record: Required<GoodsT>) => (
+      render: (text: string, record: Required<IOrder>) => (
         <Space size={3}>
           <Button
             className={styles['operation-btn']}
             type="link"
-            onClick={() => editGoods(record)}
+            onClick={() => editOrder(record)}
           >
             编辑
           </Button>
@@ -134,8 +161,41 @@ const Order: FC<RouteComponentProps> = () => {
   ]
 
   // 编辑
-  const editGoods = async (record: Required<GoodsT>) => {
-    console.log('editGoods => ', record)
+  const editOrder = async (record: Required<IOrder>) => {
+    // console.log('editOrder => ', record)
+    setFormData(record)
+    setMVisible(true)
+  }
+
+  // 保存
+  const handleSave = () => {
+    // console.log('handleSave')
+    form
+      .validateFields()
+      .then(async (values: Pick<IOrder, 'order_id' | 'status'>) => {
+        // console.log('handleSave => ', values)
+        const { order_id, status } = values // 此处只改动【订单状态】
+
+        if (status === formData.status) {
+          message.warning('没改动，无需保存')
+          return
+        }
+
+        const res = await updateOrder({ order_id, status })
+        if (res?.error_code === '00') {
+          message.success('编辑成功')
+          setMVisible(false)
+          setGt(gt + 1) // 重新获取一次系列数据
+        } else {
+          message.error(res?.error_msg ?? '')
+        }
+      })
+  }
+
+  // 取消
+  const handleCancel = () => {
+    // console.log('handleCancel')
+    setMVisible(false)
   }
 
   return (
@@ -162,6 +222,49 @@ const Order: FC<RouteComponentProps> = () => {
           }}
         />
       </section>
+      <Modal
+        width={600}
+        destroyOnClose
+        getContainer={false} // 挂载在当前 div 节点下，而不是 document.body
+        title="编辑订单"
+        okText="保存"
+        cancelText="取消"
+        visible={mVisible}
+        onOk={handleSave}
+        onCancel={handleCancel}
+      >
+        <Form
+          form={form}
+          colon={false}
+          size="middle"
+          autoComplete="off"
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+        >
+          <Form.Item label="订单编号" name="order_id">
+            <Input disabled />
+          </Form.Item>
+          <Form.Item label="用户昵称" name="user_name">
+            <Input disabled />
+          </Form.Item>
+          <Form.Item label="商品名称" name="goods_name">
+            <Input disabled />
+          </Form.Item>
+          <Form.Item label="订单状态" name="status">
+            <Select>
+              <Select.Option value={1} key={1}>
+                待付款
+              </Select.Option>
+              <Select.Option value={2} key={2}>
+                待发货
+              </Select.Option>
+              <Select.Option value={3} key={3}>
+                已完成
+              </Select.Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }
