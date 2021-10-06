@@ -87,7 +87,7 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
       key: 'name',
       align: 'center',
       render: (text: string, record: Required<SeriesT>) => (
-        <Link title="跳转至商品" to={`/app/home/goods?_key=${record._id}`}>
+        <Link title="跳转至商品" to={`/app/home/goods?q=${record._id}`}>
           {text}
         </Link>
       )
