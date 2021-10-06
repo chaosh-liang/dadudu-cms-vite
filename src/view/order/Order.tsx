@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom'
 import { Button, Modal, Space, Table, Form, Select, Input, message } from 'antd'
 import styles from './Order.module.scss'
-import { useRequest } from 'ahooks'
+import { useMount, useRequest } from 'ahooks'
 import { fetchOrder, updateOrder } from '@/api/order'
-import { formatDate } from '@/utils'
+import { formatDate, getQueryString } from '@/utils'
 import type { ColumnType } from 'rc-table/lib/interface'
 import type { IOrder } from '@/@types/order'
 
@@ -13,6 +13,9 @@ const Order: FC<RouteComponentProps> = () => {
   const [page_index, setPageIndex] = useState(1)
   const [page_size, setPageSize] = useState(10)
   const [mVisible, setMVisible] = useState(false)
+  const history = useHistory()
+  const { search: searchParams, pathname } = useLocation()
+  const [searchValue, setSearchValue] = useState('')
 
   // 表单实例，维护表单字段和状态
   const [form] = Form.useForm()
@@ -27,10 +30,16 @@ const Order: FC<RouteComponentProps> = () => {
     currency_unit: '',
     create_time: '',
     order_id: '',
-    user_name: ''
+    nick_name: ''
   }
   // 表单数据
   const [formData, setFormData] = useState<IOrder>(defaultFormData)
+
+  useMount(() => {
+    const { q } = getQueryString(searchParams)
+    // console.log('Order.tsx 初始化查询条件 => ', q)
+    setSearchValue(q)
+  })
 
   useEffect(() => {
     // console.log('series useEffect');
@@ -42,10 +51,14 @@ const Order: FC<RouteComponentProps> = () => {
 
   // 获取所有商品
   const { data, loading: fetchOrderLoading } = useRequest(
-    fetchOrder.bind(null, { page_index, page_size }),
+    fetchOrder.bind(null, {
+      page_index,
+      page_size,
+      q: getQueryString(searchParams).q
+    }),
     {
       throwOnError: true,
-      refreshDeps: [gt, page_index, page_size],
+      refreshDeps: [gt, page_index, page_size, searchParams],
       formatResult({ data: { res, total, page_index, page_size } }) {
         // 格式化接口返回的数据
         // console.log('formatResult => ', res)
@@ -95,7 +108,7 @@ const Order: FC<RouteComponentProps> = () => {
     },
     {
       title: '用户昵称',
-      dataIndex: 'user_name',
+      dataIndex: 'nick_name',
       align: 'center',
       width: 200
     },
@@ -198,10 +211,35 @@ const Order: FC<RouteComponentProps> = () => {
     setMVisible(false)
   }
 
+  // 搜索事件
+  const searchHandler = (value: string) => {
+    // console.log('searchHandler => ', value)
+    setSearchValue(value)
+    history.push({
+      pathname,
+      search: `?q=${value.trim()}`
+    })
+  }
+
+  // 搜索框改变时触发
+  const searchChangeHandler = (ev: any) => {
+    // console.log('searchChangeHandler => ', ev.target.value)
+    setSearchValue(ev.target.value)
+  }
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h4 className={styles.title}>订单</h4>
+        <div className={styles['header-left']}>
+          <Input.Search
+            placeholder="昵称、描述"
+            onSearch={searchHandler}
+            onChange={searchChangeHandler}
+            allowClear
+            enterButton
+            value={searchValue}
+          />
+        </div>
       </header>
       <section className={styles.section}>
         <Table
@@ -244,7 +282,7 @@ const Order: FC<RouteComponentProps> = () => {
           <Form.Item label="订单编号" name="order_id">
             <Input disabled />
           </Form.Item>
-          <Form.Item label="用户昵称" name="user_name">
+          <Form.Item label="用户昵称" name="nick_name">
             <Input disabled />
           </Form.Item>
           <Form.Item label="商品名称" name="goods_name">

@@ -105,7 +105,7 @@ const Recycle: FC<RouteComponentProps> = () => {
 
   // 恢复操作
   const handleRecover = async (id: string) => {
-    console.log('handleRecover => ', id)
+    // console.log('handleRecover => ', id)
     const res = await recover({ _id: id, deleted: 0 })
     if (res?.error_code === '00') {
       message.success('已恢复')

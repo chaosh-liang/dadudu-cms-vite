@@ -19,7 +19,7 @@ import {
 } from '@ant-design/icons'
 import type { GoodsT } from '@/@types/goods'
 import type { ColumnType } from 'rc-table/lib/interface'
-import { useRequest } from 'ahooks'
+import { useMount, useRequest } from 'ahooks'
 import { fetchGoods, deleteGoods } from '@/api/goods'
 import classNames from 'classnames'
 import { formatDate, getQueryString } from '@/utils'
@@ -60,11 +60,11 @@ const Goods: FC<RouteComponentProps> = () => {
   const [ovData, setOVData] = useState<GoodsT>(initOvData)
   const carouselEl = useRef<CarouselRef>(null)
 
-  useEffect(() => {
+  useMount(() => {
     const { q } = getQueryString(searchParams)
-    console.log('初始化查询条件 => ', q)
+    // console.log('Goods.tsx 初始化查询条件 => ', q)
     setSearchValue(q)
-  }, [])
+  })
 
   // 获取所有商品
   const { data, loading: fetchGoodsLoading } = useRequest(
@@ -362,7 +362,7 @@ const Goods: FC<RouteComponentProps> = () => {
       <header className={styles.header}>
         <div className={styles['header-left']}>
           <Input.Search
-            placeholder="名称、类别、系列、描述"
+            placeholder="名称、描述"
             onSearch={searchHandler}
             onChange={searchChangeHandler}
             allowClear

@@ -9,5 +9,5 @@ export interface IOrder {
   currency_unit: string
   create_time: string
   order_id: string
-  user_name: string
+  nick_name: string
 }
