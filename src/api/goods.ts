@@ -2,16 +2,17 @@ import Service from '../http'
 import type { GoodsT } from '@/@types/goods'
 const service = new Service()
 
-const ALL_GOODS = '/api/goods'
+const GOODS_URL = '/api/goods'
 const ALL_EXPIRED_GOODS = '/api/goods/expired'
 const ADD_GOODS = '/api/goods/add'
 const UPDATE_GOODS = '/api/goods/update'
 const DELETE_GOODS = '/api/goods/delete'
 
-export const fetchAllGoods = (data: {
+export const fetchGoods = (data: {
   page_index: number
   page_size: number
-}) => service.postData(ALL_GOODS, data)
+  q?: string
+}) => service.postData(GOODS_URL, data)
 
 export const fetchDeletedGoods = (data: {
   page_index: number

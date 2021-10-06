@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC, useState, useRef } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import React, { FC, useState, useRef, useEffect } from 'react'
+import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom'
 import {
   Table,
   Space,
@@ -9,7 +9,8 @@ import {
   message,
   Popconfirm,
   Drawer,
-  Carousel
+  Carousel,
+  Input
 } from 'antd'
 import {
   ExclamationCircleOutlined,
@@ -19,9 +20,9 @@ import {
 import type { GoodsT } from '@/@types/goods'
 import type { ColumnType } from 'rc-table/lib/interface'
 import { useRequest } from 'ahooks'
-import { fetchAllGoods, deleteGoods } from '@/api/goods'
+import { fetchGoods, deleteGoods } from '@/api/goods'
 import classNames from 'classnames'
-import { formatDate } from '@/utils'
+import { formatDate, getQueryString } from '@/utils'
 import AEGModal from './AEGModal'
 import styles from './Goods.module.scss'
 import type { CarouselRef } from 'antd/lib/carousel'
@@ -44,9 +45,12 @@ const Goods: FC<RouteComponentProps> = () => {
     banner_url: [''],
     deleted: 0
   }
+  const history = useHistory()
+  const { search: searchParams, pathname } = useLocation()
   const [gt, setGt] = useState(0) // 为了触发获取商品请求
   const [page_index, setPageIndex] = useState(1)
   const [aegMode, setAEGMode] = useState(1) // 1：添加，2：编辑
+  const [searchValue, setSearchValue] = useState('')
   const [aegVisible, setAEGVisible] = useState(false)
   const [aegData, setAEGData] = useState<GoodsT | null>(null)
   const [page_size, setPageSize] = useState(10)
@@ -56,12 +60,22 @@ const Goods: FC<RouteComponentProps> = () => {
   const [ovData, setOVData] = useState<GoodsT>(initOvData)
   const carouselEl = useRef<CarouselRef>(null)
 
+  useEffect(() => {
+    const { q } = getQueryString(searchParams)
+    console.log('初始化查询条件 => ', q)
+    setSearchValue(q)
+  }, [])
+
   // 获取所有商品
-  const { data, loading: fetchAllGoodsLoading } = useRequest(
-    fetchAllGoods.bind(null, { page_index, page_size }),
+  const { data, loading: fetchGoodsLoading } = useRequest(
+    fetchGoods.bind(null, {
+      page_index,
+      page_size,
+      q: getQueryString(searchParams).q
+    }),
     {
       throwOnError: true,
-      refreshDeps: [gt, page_index, page_size],
+      refreshDeps: [gt, page_index, page_size, searchParams],
       formatResult({ data: { res, total, page_index, page_size } }) {
         // 格式化接口返回的数据
         // console.log('formatResult => ', res);
@@ -89,7 +103,7 @@ const Goods: FC<RouteComponentProps> = () => {
         return { goods, total, page_index, page_size }
       },
       onError(error) {
-        console.log('Goods.tsx fetchAllGoods error => ', error)
+        console.log('Goods.tsx fetchGoods error => ', error)
       }
     }
   )
@@ -190,6 +204,22 @@ const Goods: FC<RouteComponentProps> = () => {
       // 捕获网络故障的错误
       message.error(error)
     }
+  }
+
+  // 搜索事件
+  const searchHandler = (value: string) => {
+    // console.log('searchHandler => ', value)
+    setSearchValue(value)
+    history.push({
+      pathname,
+      search: `?q=${value.trim()}`
+    })
+  }
+
+  // 搜索框改变时触发
+  const searchChangeHandler = (ev: any) => {
+    // console.log('searchChangeHandler => ', ev.target.value)
+    setSearchValue(ev.target.value)
   }
 
   // 表格列定义
@@ -330,7 +360,16 @@ const Goods: FC<RouteComponentProps> = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h4 className={styles.title}>商品</h4>
+        <div className={styles['header-left']}>
+          <Input.Search
+            placeholder="名称、类别、系列、描述"
+            onSearch={searchHandler}
+            onChange={searchChangeHandler}
+            allowClear
+            enterButton
+            value={searchValue}
+          />
+        </div>
         <div>
           {selectionIds.length ? (
             <Button
@@ -350,7 +389,7 @@ const Goods: FC<RouteComponentProps> = () => {
       <section className={styles.section}>
         <Table
           size="small"
-          loading={fetchAllGoodsLoading}
+          loading={fetchGoodsLoading}
           columns={columns}
           dataSource={data?.goods ?? []}
           rowSelection={{
