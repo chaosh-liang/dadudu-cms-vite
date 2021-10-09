@@ -8,6 +8,7 @@ class CustomAxios {
   private static instance: CustomAxios
   private axiosInst: AxiosInstance
 
+  // 私有化构造函数，外部不能 new，只能内部 new
   private constructor() {
     // withCredentials: 带上 cookie。也可以在 interceptors.request 设置规则
     this.axiosInst = axios.create({
