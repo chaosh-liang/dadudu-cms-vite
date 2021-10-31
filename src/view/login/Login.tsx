@@ -20,44 +20,29 @@ const Login: FC<RouteComponentProps> = () => {
   }, [bg])
 
   // 获取必应每日一图，作为背景图
-  const fetchBingImage = () => {
-    fetchBingImg()
-      .then((res: any) => {
-        if (res?.images?.[0]?.url) {
-          const {
-            images: {
-              0: { url }
-            }
-          } = res
-          // 需拼接前缀域名 https://www.cn.bing.com/ 或 https://www.bing.com/ 或 http://s.cn.bing.net/
-          const completedUrl = `https://www.cn.bing.com/${url}`
-          setBg(completedUrl)
-        }
-      })
-      .catch((reason) => {
-        console.log('fetchBingImg error => ', reason)
-      })
-  }
-  // axios 发送请求
-  const fetchBingImageByAxios = () => {
-    fetchBingImg()
-      .then((res: any) => {
-        if (res?.data?.images?.[0]?.url) {
-          const {
-            data: {
-              images: {
-                0: { url }
+  const fetchBingImage = async () => {
+    try {
+      const result = (await fetchBingImg()) as any
+      // console.log('/bing result => ', result)
+      if (result?.data?.res?.data?.images?.[0]?.url) {
+        const {
+          data: {
+            res: {
+              data: {
+                images: {
+                  0: { url }
+                }
               }
             }
-          } = res
-          // 需拼接前缀域名 https://www.cn.bing.com/ 或 https://www.bing.com/ 或 http://s.cn.bing.net/
-          const completedUrl = `https://www.cn.bing.com/${url}`
-          setBg(completedUrl)
-        }
-      })
-      .catch((reason) => {
-        console.log('fetchBingImg error => ', reason)
-      })
+          }
+        } = result
+        // 需拼接前缀域名 https://www.cn.bing.com/ 或 https://www.bing.com/ 或 http://s.cn.bing.net/
+        const completedUrl = `https://www.cn.bing.com/${url}`
+        setBg(completedUrl)
+      }
+    } catch (error) {
+      console.log('fetchBingImg error => ', error)
+    }
   }
 
   // 加密（HmacSHA256）
