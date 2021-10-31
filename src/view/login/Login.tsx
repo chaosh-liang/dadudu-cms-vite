@@ -1,8 +1,8 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { RouteComponentProps, useHistory } from 'react-router-dom'
 import CryptoJS from 'crypto-js'
 import { Form, Input, Button, message } from 'antd'
-import { login } from '@/api/author'
+import { login, fetchBingImg } from '@/api/author'
 import Styles from './Login.module.scss'
 
 interface UserInfo {
@@ -13,6 +13,52 @@ interface UserInfo {
 const Login: FC<RouteComponentProps> = () => {
   const history = useHistory()
   const [logining, setLogining] = useState(false)
+  const [bg, setBg] = useState('')
+
+  useEffect(() => {
+    if (!bg) fetchBingImage()
+  }, [bg])
+
+  // 获取必应每日一图，作为背景图
+  const fetchBingImage = () => {
+    fetchBingImg()
+      .then((res: any) => {
+        if (res?.images?.[0]?.url) {
+          const {
+            images: {
+              0: { url }
+            }
+          } = res
+          // 需拼接前缀域名 https://www.cn.bing.com/ 或 https://www.bing.com/ 或 http://s.cn.bing.net/
+          const completedUrl = `https://www.cn.bing.com/${url}`
+          setBg(completedUrl)
+        }
+      })
+      .catch((reason) => {
+        console.log('fetchBingImg error => ', reason)
+      })
+  }
+  // axios 发送请求
+  const fetchBingImageByAxios = () => {
+    fetchBingImg()
+      .then((res: any) => {
+        if (res?.data?.images?.[0]?.url) {
+          const {
+            data: {
+              images: {
+                0: { url }
+              }
+            }
+          } = res
+          // 需拼接前缀域名 https://www.cn.bing.com/ 或 https://www.bing.com/ 或 http://s.cn.bing.net/
+          const completedUrl = `https://www.cn.bing.com/${url}`
+          setBg(completedUrl)
+        }
+      })
+      .catch((reason) => {
+        console.log('fetchBingImg error => ', reason)
+      })
+  }
 
   // 加密（HmacSHA256）
   const encryption = (val: string) => {
@@ -41,7 +87,7 @@ const Login: FC<RouteComponentProps> = () => {
   }
 
   return (
-    <div className={Styles.container}>
+    <div className={Styles.container} style={{ backgroundImage: `url(${bg})` }}>
       <div className={Styles['form-container']}>
         <Form
           name="basic"
