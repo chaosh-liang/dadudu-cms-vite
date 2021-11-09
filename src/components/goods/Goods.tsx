@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC, useState, useRef, useEffect } from 'react'
+import React, { FC, useState, useRef } from 'react'
 import { RouteComponentProps, useHistory, useLocation } from 'react-router-dom'
 import {
   Table,
@@ -153,12 +153,24 @@ const Goods: FC<RouteComponentProps> = () => {
   // 删除：单个
   const handleDelete = (id: string) => {
     // console.log('handleDelete', [id]);
+    let role = localStorage.getItem('fragile')
+    role = role ? window.atob(role) : '3'
+    if (`${role}` === '3') {
+      message.error('访客模式，不能删除')
+      return
+    }
     handleDeleteRequest([id])
   }
 
   // 删除：多个
   const handleDeleteMulti = () => {
     // console.log('handleDeleteMulti => ', selectionIds, selectionRows);
+    let role = localStorage.getItem('fragile')
+    role = role ? window.atob(role) : '3'
+    if (`${role}` === '3') {
+      message.error('访客模式，不能删除')
+      return
+    }
     Modal.confirm({
       width: 600,
       title: '删除提示',

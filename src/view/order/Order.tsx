@@ -183,6 +183,12 @@ const Order: FC<RouteComponentProps> = () => {
   // 保存
   const handleSave = () => {
     // console.log('handleSave')
+    let role = localStorage.getItem('fragile')
+    role = role ? window.atob(role) : '3'
+    if (`${role}` === '3') {
+      message.error('访客模式，不能保存')
+      return
+    }
     form
       .validateFields()
       .then(async (values: Pick<IOrder, 'order_id' | 'status'>) => {

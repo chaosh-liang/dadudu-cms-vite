@@ -56,10 +56,19 @@ const Login: FC<RouteComponentProps> = () => {
     setLogining(true)
     const { user_name, password } = values
     const params = { user_name, password: encryption(password) }
-    // console.log('onFinish => ', values, params);
+    // console.log('onFinish => ', values, params)
     const res = await login(params)
     setLogining(false)
     if (res?.error_code === '00') {
+      // console.log('res ', res)
+      const {
+        data: {
+          res: { user_name: account, role }
+        }
+      } = res
+      // 设置帐号信息 session
+      localStorage.setItem('acc', account)
+      localStorage.setItem('fragile', role)
       history.replace('/app')
     } else {
       message.error(res?.error_msg)

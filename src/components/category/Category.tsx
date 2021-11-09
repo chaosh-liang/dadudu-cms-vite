@@ -164,6 +164,12 @@ const Category: FC<RouteComponentProps> = () => {
 
   // 保存
   const handleSave = () => {
+    let role = localStorage.getItem('fragile')
+    role = role ? window.atob(role) : '3'
+    if (`${role}` === '3') {
+      message.error(`访客模式，不能${aecMode === 1 ? '提交' : '保存'}`)
+      return
+    }
     form
       .validateFields()
       .then(async (values: CategoryT) => {
@@ -222,6 +228,12 @@ const Category: FC<RouteComponentProps> = () => {
   // 删除
   const handleDelete = async (id: React.Key) => {
     // console.log('handleDelete', id);
+    let role = localStorage.getItem('fragile')
+    role = role ? window.atob(role) : '3'
+    if (`${role}` === '3') {
+      message.error('访客模式，不能删除')
+      return
+    }
     try {
       const res = await deleteCategory({ id })
       if (res?.error_code === '00') {

@@ -106,6 +106,12 @@ const Recycle: FC<RouteComponentProps> = () => {
   // 恢复操作
   const handleRecover = async (id: string) => {
     // console.log('handleRecover => ', id)
+    let role = localStorage.getItem('fragile')
+    role = role ? window.atob(role) : '3'
+    if (`${role}` === '3') {
+      message.error('访客模式，不能恢复')
+      return
+    }
     const res = await recover({ _id: id, deleted: 0 })
     if (res?.error_code === '00') {
       message.success('已恢复')

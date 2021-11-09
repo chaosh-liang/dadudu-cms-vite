@@ -63,6 +63,7 @@ const App: FC<RouteComponentProps> = () => {
       async onOk() {
         const res = await logout()
         if (res?.error_code === '00') {
+          localStorage.clear()
           setTimeout(() => history.push('/login'), 500) // 反应太快，导致：已经切到 login 页面了，退出登录提示框还没消失
         }
       }
@@ -82,6 +83,7 @@ const App: FC<RouteComponentProps> = () => {
               )
             })}
           </Menu>
+          <span className={styles.account}>{localStorage.getItem('acc')}</span>
           <Button type="link" onClick={handleLogout}>
             退出
           </Button>

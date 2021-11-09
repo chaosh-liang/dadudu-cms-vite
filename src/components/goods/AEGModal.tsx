@@ -3,7 +3,7 @@
  * @Email: broli.up.up.up@gmail.com
  * @Date: 2021-09-03 10:41:33
  * @LastEditors: Broli
- * @LastEditTime: 2021-10-05 18:23:12
+ * @LastEditTime: 2021-11-09 11:55:05
  * @Description1: 建议使用 form 实例来维护表单状态
  * @Description1: 但 setFieldsValue 不会触发 onFieldsChange 和 onValuesChange
  * @Description1: 所以，想实现表单的双向绑定，还需外部对象辅助，描述参见下文 @Note
@@ -209,6 +209,12 @@ const AEGModal: FC<LocalProps> = (props) => {
 
   // 保存：确定
   const handleSave = () => {
+    let role = localStorage.getItem('fragile')
+    role = role ? window.atob(role) : '3'
+    if (`${role}` === '3') {
+      message.error(`访客模式，不能${props.mode === 1 ? '提交' : '保存'}`)
+      return
+    }
     // console.log('handleSave => ', form.getFieldsValue(true));
     form.validateFields().then(async (values: LocalFormData) => {
       // console.log('form.validateFields success => ', values);

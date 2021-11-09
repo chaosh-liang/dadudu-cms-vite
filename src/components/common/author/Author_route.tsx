@@ -37,7 +37,10 @@ const AuthorRoute: FC<RouteProps> = (props) => {
         if (data?.res?.online) {
           setAppLogined(true)
         } else {
-          message.error('请重新登录', () => setBck2Login(true))
+          message.error('请重新登录', () => {
+            localStorage.clear()
+            setBck2Login(true)
+          })
         }
       } else {
         setExpection(true)
@@ -54,7 +57,12 @@ const AuthorRoute: FC<RouteProps> = (props) => {
 
   return (
     <>
-      {back2Login && <Redirect to="/login" />}
+      {
+        // 加入帐号的角色权限进行判断
+        (!localStorage.getItem('fragile') || back2Login) && (
+          <Redirect to="/login" />
+        )
+      }
       <Route
         {...rest}
         render={(props) => {
