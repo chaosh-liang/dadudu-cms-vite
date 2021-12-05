@@ -33,15 +33,15 @@ export default defineConfig({
   plugins: [
     reactRefresh(),
     viteCompression(),
-    minifyHtml(),
-    injectHtml({
-      data: {
-        injectLink:
-          process.env.NODE_ENV === 'production'
-            ? '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">'
-            : ''
-      }
-    })
+    minifyHtml()
+    // injectHtml({
+    //   data: {
+    //     injectLink:
+    //       process.env.NODE_ENV === 'production'
+    //         ? '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.16.13/antd.min.css">'
+    //         : ''
+    //   }
+    // })
   ],
   resolve: {
     alias: {
@@ -70,6 +70,16 @@ export default defineConfig({
         comparisons: false,
         drop_debugger: true,
         drop_console: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          axios: ['axios'],
+          antd: ['antd'],
+          react: ['react', 'react-dom'],
+          'react-router': ['react-router-dom']
+        }
       }
     }
   }

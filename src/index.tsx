@@ -1,16 +1,20 @@
-import React, { Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
-import App from '@/view/app/App'
+// import App from '@/view/app/App'
 import Login from '@/view/login/Login'
 import AuthorRoute from '@/components/common/author/Author_route'
 import store from '@/store'
 
 import './index.css'
-if (process.env.NODE_ENV === 'development') await import('antd/dist/antd.css') // 生产环境使用 cdn
+// if (process.env.NODE_ENV === 'development') await import('antd/dist/antd.css') // 生产环境使用 cdn
+import 'antd/dist/antd.css'
 import '@/assets/scss/common.scss'
 import '@/assets/scss/antd.override.scss'
+const App = lazy(
+  () => import(/* webpackChunkName: "chunk-app" */ '@/view/app/App')
+)
 
 const RenderJsx = () => (
   <Provider store={store}>
