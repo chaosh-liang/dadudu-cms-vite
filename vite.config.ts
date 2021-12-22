@@ -11,8 +11,8 @@ const setProxy = () => {
     // 代理，默认配置
     '/api': {
       // url 会自动补全：`${target}/api`
-      target: 'http://localhost:7716/cms/dadudu', // 本地服务
-      // target: 'http://101.34.21.222/cms/dadudu', // 线上服务-无需端口
+      target: 'http://localhost:7716/cms/yjdp', // 本地服务
+      // target: 'http://101.34.21.222/cms/yjdp', // 线上服务-无需端口
       secure: false,
       changeOrigin: true
     }

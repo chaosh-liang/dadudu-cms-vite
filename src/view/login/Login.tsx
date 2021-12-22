@@ -47,7 +47,7 @@ const Login: FC<RouteComponentProps> = () => {
 
   // 加密（HmacSHA256）
   const encryption = (val: string) => {
-    const Ciphertext = CryptoJS.HmacSHA256(val, 'DADUDU_CMS')
+    const Ciphertext = CryptoJS.HmacSHA256(val, 'YJDP_CMS')
     const base64 = CryptoJS.enc.Base64.stringify(Ciphertext)
     return base64
   }

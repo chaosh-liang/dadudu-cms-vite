@@ -2,7 +2,7 @@ import { message } from 'antd'
 import axios, { AxiosResponse, AxiosInstance } from 'axios'
 
 const TIMEOUT = 10000
-const baseURL = process.env.NODE_ENV === 'production' ? '/cms/dadudu' : ''
+const baseURL = process.env.NODE_ENV === 'production' ? '/cms/yjdp' : ''
 
 class CustomAxios {
   private static instance: CustomAxios
