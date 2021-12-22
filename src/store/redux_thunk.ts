@@ -3,7 +3,7 @@
  * @Email: broli.up.up.up@gmail.com
  * @Date: 2021-09-08 22:58:45
  * @LastEditors: Broli
- * @LastEditTime: 2021-09-14 00:41:10
+ * @LastEditTime: 2021-12-22 15:27:07
  * @Description: 以下两种情况的操作，应在此文件中完成：
  * @Description: redux 中使用的副作用（如：请求）
  * @Description: store 中的公共方法（如：设置全局状态）
@@ -32,7 +32,7 @@ export const fetchCategoryThunk = () => {
           return {
             ...item,
             key,
-            sequence: `0${index + 1}`.slice(-2),
+            sequence: index < 10 ? `0${index + 1}` : `${index}`,
             series_count: series_data.length,
             label: name,
             value: key,

@@ -23,9 +23,8 @@ const Recycle: FC<RouteComponentProps> = () => {
         // 格式化接口返回的数据
         // console.log('formatResult => ', res);
         const goods = res.map((item: GoodsT, index: number) => {
-          const sequence = `0${(page_index - 1) * page_size + index + 1}`.slice(
-            -2
-          ) // 序号
+          const n = (page_index - 1) * page_size + index + 1
+          const sequence = n < 10 ? `0${n}` : `${n}` // 序号
           const { _id: key, create_time, update_time } = item
           return {
             ...item,

@@ -182,7 +182,7 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
           return {
             ...item,
             key,
-            sequence: `0${index + 1}`.slice(-2),
+            sequence: +index < 10 ? `0${index + 1}` : `${index}`,
             create_time: create_time && formatDate(create_time),
             update_time: update_time && formatDate(update_time)
           }

@@ -78,11 +78,10 @@ const Goods: FC<RouteComponentProps> = () => {
       refreshDeps: [gt, page_index, page_size, searchParams],
       formatResult({ data: { res, total, page_index, page_size } }) {
         // 格式化接口返回的数据
-        // console.log('formatResult => ', res);
+        // console.log('formatResult => ', res)
         const goods = res.map((item: GoodsT, index: number) => {
-          const sequence = `0${(page_index - 1) * page_size + index + 1}`.slice(
-            -2
-          ) // 序号
+          const n = (page_index - 1) * page_size + index + 1
+          const sequence = n < 10 ? `0${n}` : `${n}` // 序号
           const {
             _id: key,
             home_banner,
@@ -424,7 +423,7 @@ const Goods: FC<RouteComponentProps> = () => {
             pageSizeOptions: ['10', '15', '20', '50'], // 指定每页可以显示多少条 string[]
             onShowSizeChange: pageSizeChange, // pageSize 变化的回调 Function(current, size)
             // showTotal: total => (`共 ${total} 条数据`), // 调试使用
-            showTotal: (total) => `共 ${data?.total ?? 0} 条数据` // 用于显示数据总量和当前数据顺序 Function(total, range)
+            showTotal: () => `共 ${data?.total ?? 0} 条数据` // 用于显示数据总量和当前数据顺序 Function(total, range)
           }}
         />
       </section>
