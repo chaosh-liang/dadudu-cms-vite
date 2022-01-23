@@ -6,7 +6,7 @@ node_modules
 /build
 /dist*
 /dll_*
-local-proxy.js
+# local-proxy.js
 *.zip
 
 # log
