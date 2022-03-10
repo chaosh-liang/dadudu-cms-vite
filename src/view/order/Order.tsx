@@ -143,7 +143,7 @@ const Order: FC<RouteComponentProps> = () => {
       width: 150
     },
     {
-      title: '下单商品',
+      title: '下单商品（描述）',
       dataIndex: 'goods_name',
       align: 'center',
       width: 300
@@ -238,7 +238,7 @@ const Order: FC<RouteComponentProps> = () => {
       <header className={styles.header}>
         <div className={styles['header-left']}>
           <Input.Search
-            placeholder="昵称、描述"
+            placeholder="昵称、描述、完整的订单编号"
             onSearch={searchHandler}
             onChange={searchChangeHandler}
             allowClear
