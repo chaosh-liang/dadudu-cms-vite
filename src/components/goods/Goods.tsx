@@ -29,13 +29,11 @@ import type { CarouselRef } from 'antd/lib/carousel'
 
 const Goods: FC<RouteComponentProps> = () => {
   const initOvData = {
-    name: '',
+    name_zh: '',
+    name_en: '',
     price: 1,
-    desc: '',
-    discount_price: 1,
-    discount_threshold: 1,
-    count_unit: '',
-    currency_unit: '￥',
+    desc_zh: '',
+    desc_en: '',
     home_banner: false,
     home_display: false,
     series_id: '',
@@ -59,6 +57,22 @@ const Goods: FC<RouteComponentProps> = () => {
   const [selectionRows, setSelectionRows] = useState<Required<GoodsT>[]>([])
   const [ovData, setOVData] = useState<GoodsT>(initOvData)
   const carouselEl = useRef<CarouselRef>(null)
+  const [ovLang, setOvLang] = useState<string>('zh') // 预览面板语言切换
+  const ovTitle = (
+    <div>
+      <span style={{ color: '#1890ff' }}>iPhone X 模拟器</span>
+      <Button
+        size="small"
+        onClick={() => ovSwitchLang('zh')}
+        style={{ marginLeft: '30px', marginRight: '5px' }}
+      >
+        中文
+      </Button>
+      <Button size="small" onClick={() => ovSwitchLang('en')}>
+        英文
+      </Button>
+    </div>
+  )
 
   useMount(() => {
     const { q } = getQueryString(searchParams)
@@ -233,6 +247,11 @@ const Goods: FC<RouteComponentProps> = () => {
     setSearchValue(ev.target.value)
   }
 
+  // 预览面板切换语言
+  const ovSwitchLang = (lang: string) => {
+    setOvLang(lang)
+  }
+
   // 表格列定义
   const columns: ColumnType<Required<GoodsT>>[] = [
     {
@@ -243,58 +262,37 @@ const Goods: FC<RouteComponentProps> = () => {
       width: 50
     },
     {
-      title: '商品名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: '中文名称',
+      dataIndex: 'name_zh',
+      key: 'name_zh',
       align: 'center',
       width: 100
     },
     {
-      title: '价格',
+      title: '英文名称',
+      dataIndex: 'name_en',
+      key: 'name_en',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '价格(RMB)',
       dataIndex: 'price',
       key: 'price',
       align: 'center',
-      width: 65
-    },
-    {
-      title: '折扣数量',
-      dataIndex: 'discount_threshold',
-      key: 'discount_threshold',
-      align: 'center',
-      width: 75
-    },
-    {
-      title: '折扣价',
-      dataIndex: 'discount_price',
-      key: 'discount_price',
-      align: 'center',
-      width: 65
-    },
-    {
-      title: '单位',
-      dataIndex: 'count_unit',
-      key: 'count_unit',
-      align: 'center',
-      width: 50
-    },
-    {
-      title: '货币',
-      dataIndex: 'currency_unit',
-      key: 'currency_unit',
-      align: 'center',
-      width: 50
+      width: 100
     },
     {
       title: '类别',
-      dataIndex: 'category_name',
-      key: 'category_name',
+      dataIndex: 'category_name_zh',
+      key: 'category_name_zh',
       align: 'center',
       width: 80
     },
     {
       title: '系列',
-      dataIndex: 'series_name',
-      key: 'series_name',
+      dataIndex: 'series_name_zh',
+      key: 'series_name_zh',
       align: 'center',
       width: 80
     },
@@ -327,9 +325,15 @@ const Goods: FC<RouteComponentProps> = () => {
       width: 150
     },
     {
-      title: '描述',
-      dataIndex: 'desc',
-      key: 'desc',
+      title: '中文描述',
+      dataIndex: 'desc_zh',
+      key: 'desc_en',
+      align: 'left'
+    },
+    {
+      title: '英文描述',
+      dataIndex: 'desc_en',
+      key: 'desc_en',
       align: 'left'
     },
     {
@@ -428,7 +432,7 @@ const Goods: FC<RouteComponentProps> = () => {
         />
       </section>
       <Drawer
-        title="iPhone X 模拟器"
+        title={ovTitle}
         width={425}
         destroyOnClose
         onClose={handleOVClose}
@@ -459,13 +463,11 @@ const Goods: FC<RouteComponentProps> = () => {
           </div>
           <div className={styles['price-area']}>
             <div className={styles['price-info']}>
-              <span className={styles.price}>
-                {ovData.currency_unit}
-                {ovData.price}
-              </span>
-              <span className={styles.unit}>/{ovData.count_unit}</span>
+              <span className={styles.price}>￥{ovData.price}</span>
+              <span className={styles.unit}>(RMB)</span>
+              {/* <span className={styles.unit}>/{ovData.count_unit}</span> */}
             </div>
-            <div className={styles['price-discount']}>
+            {/* <div className={styles['price-discount']}>
               <span>
                 {ovData.currency_unit}
                 {ovData.discount_price}
@@ -474,8 +476,10 @@ const Goods: FC<RouteComponentProps> = () => {
                 /{ovData.discount_threshold}
                 {ovData.count_unit}
               </span>
+            </div> */}
+            <div className={styles.desc}>
+              {`${ovLang}` === 'zh' ? ovData.desc_zh : ovData.desc_en}
             </div>
-            <div className={styles.desc}>{ovData.desc}</div>
           </div>
           <div className={styles['desc-box']}>
             {ovData.desc_url.map((url) => (

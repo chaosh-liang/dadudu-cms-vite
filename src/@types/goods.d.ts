@@ -1,7 +1,9 @@
 export interface GoodsT extends Record<string, any> {
   _id?: string
-  name: string
-  desc: string
+  name_zh: string
+  name_en: string
+  desc_zh: string
+  desc_en: string
   icon_url: string
   price: number
   series_id: string
@@ -9,11 +11,7 @@ export interface GoodsT extends Record<string, any> {
   series_name?: string
   category_name?: string
   home_banner: boolean
-  discount_price: number
-  discount_threshold: number
   home_display: boolean
-  currency_unit: string
-  count_unit: string
   desc_url: string[]
   banner_url: string[]
   create_time?: string

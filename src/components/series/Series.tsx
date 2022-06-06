@@ -40,7 +40,8 @@ type SeriesTable = SeriesT & {
 const Series: FC<RouteComponentProps<{ id: string }>> = () => {
   const { id: category_id } = useParams<{ id: string }>()
   const formData: SeriesT = {
-    name: '',
+    name_zh: '',
+    name_en: '',
     category_id,
     no: 1,
     desc: '',
@@ -52,7 +53,8 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
     {
       _id: 'id',
       key: 'id',
-      name: '',
+      name_zh: '',
+      name_en: '',
       category_id,
       no: 1,
       desc: '',
@@ -83,8 +85,8 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
     },
     {
       title: '系列名称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'name_zh',
+      key: 'name_zh',
       align: 'center',
       render: (text: string, record: Required<SeriesT>) => (
         <Link title="跳转至商品" to={`/app/home/goods?q=${record._id}`}>
@@ -317,7 +319,7 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
           <span style={{ color: '#1890ff' }}>
             {categoryData.find(
               (category: CategoryT) => category._id === category_id
-            )?.name ?? '--'}
+            )?.name_zh ?? '--'}
           </span>
         </h4>
         <div>

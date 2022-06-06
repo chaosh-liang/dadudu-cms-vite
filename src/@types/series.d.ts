@@ -1,6 +1,7 @@
 export interface SeriesT extends Record<string, any> {
   _id?: string
-  name: string
+  name_zh: string
+  name_en: string
   category_id: string
   no: number
   desc: string

@@ -61,9 +61,16 @@ const Recycle: FC<RouteComponentProps> = () => {
       width: 50
     },
     {
-      title: '商品名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: '中文名称',
+      dataIndex: 'name_zh',
+      key: 'name_zh',
+      align: 'center',
+      width: 250
+    },
+    {
+      title: '英文名称',
+      dataIndex: 'name_en',
+      key: 'name_en',
       align: 'center',
       width: 250
     },
@@ -75,10 +82,16 @@ const Recycle: FC<RouteComponentProps> = () => {
       width: 200
     },
     {
-      title: '描述',
-      dataIndex: 'desc',
-      key: 'desc',
-      align: 'left'
+      title: '中文描述',
+      dataIndex: 'desc_zh',
+      key: 'desc_zh',
+      align: 'center'
+    },
+    {
+      title: '英文描述',
+      dataIndex: 'desc_en',
+      key: 'desc_en',
+      align: 'center'
     },
     {
       title: '操作',

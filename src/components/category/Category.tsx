@@ -36,8 +36,8 @@ const Category: FC<RouteComponentProps> = () => {
     },
     {
       title: '类别名称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'name_zh',
+      key: 'name_zh',
       align: 'center',
       render: (text: string, record: Record<string, any>) => (
         <Link title="跳转至系列" to={`${path}/${record._id}`}>
@@ -110,7 +110,8 @@ const Category: FC<RouteComponentProps> = () => {
   ]
 
   const formData: CategoryT = {
-    name: '',
+    name_zh: '',
+    name_en: '',
     desc: '',
     no: 1,
     series_data: []
