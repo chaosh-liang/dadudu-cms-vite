@@ -81,13 +81,27 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
       title: '序号',
       dataIndex: 'sequence',
       key: 'sequence',
-      align: 'center'
+      align: 'center',
+      width: 50
     },
     {
-      title: '系列名称',
+      title: '系列名称(中文)',
       dataIndex: 'name_zh',
       key: 'name_zh',
       align: 'center',
+      width: 150,
+      render: (text: string, record: Required<SeriesT>) => (
+        <Link title="跳转至商品" to={`/app/home/goods?q=${record._id}`}>
+          {text}
+        </Link>
+      )
+    },
+    {
+      title: '系列名称(英文)',
+      dataIndex: 'name_en',
+      key: 'name_en',
+      align: 'center',
+      width: 150,
       render: (text: string, record: Required<SeriesT>) => (
         <Link title="跳转至商品" to={`/app/home/goods?q=${record._id}`}>
           {text}
@@ -98,36 +112,41 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
       title: '商品数量',
       dataIndex: 'goods_count',
       key: 'goods_count',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '排序',
       dataIndex: 'no',
       key: 'no',
-      align: 'center'
+      align: 'center',
+      width: 50
     },
     {
       title: '创建时间',
       dataIndex: 'create_time',
       key: 'create_time',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '更新时间',
       dataIndex: 'update_time',
       key: 'update_time',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '描述',
       dataIndex: 'desc',
       key: 'desc',
-      align: 'center'
+      align: 'left'
     },
     {
       title: '操作',
       key: 'action',
       align: 'center',
+      width: 150,
       render: (text: string, record: Required<SeriesT>) => (
         <Space size="small">
           <Button
@@ -328,7 +347,7 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
           </Button>
         </div>
       </header>
-      <section className={styles.section}>
+      <section>
         <Table
           size="middle"
           columns={columns}
@@ -359,14 +378,25 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
         >
           <Form.Item
             validateFirst
-            label="名称"
-            name="name"
+            label="中文名称"
+            name="name_zh"
             rules={[
-              { required: true, message: '请输入名称' },
+              { required: true, message: '请输入中文名称' },
               { type: 'string', whitespace: true, message: '不能只输入空格符' }
             ]}
           >
-            <Input placeholder="请输入名称" />
+            <Input placeholder="请输入中文名称" />
+          </Form.Item>
+          <Form.Item
+            validateFirst
+            label="英文名称"
+            name="name_en"
+            rules={[
+              { required: true, message: '请输入英文名称' },
+              { type: 'string', whitespace: true, message: '不能只输入空格符' }
+            ]}
+          >
+            <Input placeholder="请输入英文名称" />
           </Form.Item>
           <Form.Item
             validateFirst
@@ -393,7 +423,7 @@ const Series: FC<RouteComponentProps<{ id: string }>> = () => {
             <Select>
               {categoryData.map((c: CategoryT) => (
                 <Select.Option value={c._id ?? ''} key={c._id}>
-                  {c.name}
+                  {c.name_zh}
                 </Select.Option>
               ))}
             </Select>

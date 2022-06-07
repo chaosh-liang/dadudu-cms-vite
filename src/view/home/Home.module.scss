@@ -13,6 +13,8 @@
     }
     .ant-layout-content {
       padding: 0;
+      width: calc(100% - 117px);
+      background-color: #fff;
       .ant-spin-nested-loading {
         height: 100%;
         .ant-spin-container {

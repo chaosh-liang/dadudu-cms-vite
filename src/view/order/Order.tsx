@@ -22,12 +22,11 @@ const Order: FC<RouteComponentProps> = () => {
   const defaultFormData = {
     user_id: '',
     goods_id: '',
-    goods_name: '',
+    goods_desc_zh: '',
     gcount: 1,
     status: 1,
     order_status: '待付款',
     actual_pay: 1,
-    currency_unit: '',
     create_time: '',
     order_id: '',
     nick_name: ''
@@ -125,13 +124,19 @@ const Order: FC<RouteComponentProps> = () => {
       width: 100
     },
     {
-      title: '订单金额',
+      title: '下单数量',
+      dataIndex: 'gcount',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '订单金额(RMB)',
       dataIndex: 'actual_pay',
       align: 'center',
-      width: 100,
+      width: 150,
       render: (text: string, record: Required<IOrder>) => (
         <div>
-          <span>{record.currency_unit}</span>
+          <span>￥</span>
           <span>{text}</span>
         </div>
       )
@@ -144,15 +149,8 @@ const Order: FC<RouteComponentProps> = () => {
     },
     {
       title: '下单商品（描述）',
-      dataIndex: 'goods_name',
-      align: 'center',
-      width: 300
-    },
-    {
-      title: '下单数量',
-      dataIndex: 'gcount',
-      align: 'center',
-      width: 100
+      dataIndex: 'goods_desc_zh',
+      align: 'left'
     },
     {
       title: '操作',

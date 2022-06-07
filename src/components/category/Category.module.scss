@@ -1,6 +1,13 @@
 .container {
-  :global(.ant-btn-link) {
-    padding: 4px 5px;
+  :global {
+    .ant-btn-link {
+      padding: 4px 5px;
+    }
+    .ant-table {
+      .ant-table-thead tr th {
+        text-align: center !important;
+      }
+    }
   }
   .header {
     display: flex;

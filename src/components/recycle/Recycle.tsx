@@ -65,33 +65,33 @@ const Recycle: FC<RouteComponentProps> = () => {
       dataIndex: 'name_zh',
       key: 'name_zh',
       align: 'center',
-      width: 250
+      width: 200
     },
     {
       title: '英文名称',
       dataIndex: 'name_en',
       key: 'name_en',
       align: 'center',
-      width: 250
+      width: 200
     },
     {
       title: '删除时间',
       dataIndex: 'update_time',
       key: 'update_time',
       align: 'center',
-      width: 200
+      width: 150
     },
     {
       title: '中文描述',
       dataIndex: 'desc_zh',
       key: 'desc_zh',
-      align: 'center'
+      align: 'left'
     },
     {
       title: '英文描述',
       dataIndex: 'desc_en',
       key: 'desc_en',
-      align: 'center'
+      align: 'left'
     },
     {
       title: '操作',
@@ -138,7 +138,7 @@ const Recycle: FC<RouteComponentProps> = () => {
       <header className={styles.header}>
         <h4 className={styles.title}>回收站</h4>
       </header>
-      <section className={styles.section}>
+      <section>
         <Table
           size="small"
           loading={fetchDeletedGoodsLoading}

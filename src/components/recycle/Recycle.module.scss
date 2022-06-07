@@ -7,7 +7,7 @@
       padding: 4px 5px;
     }
     .ant-table {
-      .ant-table-thead tr th:nth-last-child(2) {
+      .ant-table-thead tr th {
         text-align: center !important;
       }
     }
@@ -27,8 +27,5 @@
       margin: 0;
       font-weight: 600;
     }
-  }
-  .section {
-    flex: 1;
   }
 }

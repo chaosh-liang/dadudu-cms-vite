@@ -9,7 +9,7 @@
       padding: 4px 5px;
     }
     .ant-table {
-      .ant-table-thead tr th:nth-last-child(2) {
+      .ant-table-thead tr th {
         text-align: center !important;
       }
     }
@@ -34,5 +34,10 @@
   }
   .section {
     flex: 1;
+    :global {
+      .ant-table table {
+        min-height: 600px;
+      }
+    }
   }
 }

@@ -3,7 +3,7 @@
  * @Email: broli.up.up.up@gmail.com
  * @Date: 2021-09-03 10:41:33
  * @LastEditors: Broli
- * @LastEditTime: 2021-11-09 11:55:05
+ * @LastEditTime: 2022-06-07 16:33:30
  * @Description1: 建议使用 form 实例来维护表单状态
  * @Description1: 但 setFieldsValue 不会触发 onFieldsChange 和 onValuesChange
  * @Description1: 所以，想实现表单的双向绑定，还需外部对象辅助，描述参见下文 @Note
@@ -38,13 +38,11 @@ interface LocalProps {
 }
 
 interface LocalFormData {
-  name: string
+  name_zh: string
+  name_en: string
+  desc_zh: string
+  desc_en: string
   price: number
-  desc: string
-  discount_price: number
-  discount_threshold: number
-  count_unit: string
-  currency_unit: string
   home_banner: boolean
   home_display: boolean
   cs_cascader: string[]
@@ -57,13 +55,11 @@ const AEGModal: FC<LocalProps> = (props) => {
   // 表单初始化数据：添加模式
   const addModeFormData = useMemo<LocalFormData>(
     () => ({
-      name: '',
+      name_zh: '',
+      desc_zh: '',
+      name_en: '',
+      desc_en: '',
       price: 1,
-      desc: '',
-      discount_price: 1,
-      discount_threshold: 1,
-      count_unit: '',
-      currency_unit: '￥',
       home_banner: false,
       home_display: false,
       cs_cascader: ['', ''],
@@ -86,13 +82,11 @@ const AEGModal: FC<LocalProps> = (props) => {
       if (props.mode === 2 && props.data) {
         // console.log('mode === 2');
         const {
-          name,
+          name_zh,
+          name_en,
+          desc_zh,
+          desc_en,
           price,
-          desc,
-          discount_price,
-          discount_threshold,
-          count_unit,
-          currency_unit,
           home_banner,
           home_display,
           category_id,
@@ -102,19 +96,18 @@ const AEGModal: FC<LocalProps> = (props) => {
           banner_url
         } = props.data
         const editModeFormData: LocalFormData = { ...addModeFormData } // 默认值
-        editModeFormData.name = name
+        editModeFormData.name_zh = name_zh
+        editModeFormData.name_en = name_en
+        editModeFormData.desc_zh = desc_zh
+        editModeFormData.desc_en = desc_en
         editModeFormData.price = price
-        editModeFormData.desc = desc
-        editModeFormData.discount_price = discount_price
-        editModeFormData.discount_threshold = discount_threshold
-        editModeFormData.count_unit = count_unit
-        editModeFormData.currency_unit = currency_unit
         editModeFormData.home_banner = home_banner
         editModeFormData.home_display = home_display
         editModeFormData.cs_cascader = [category_id, series_id]
         editModeFormData.icon_url = icon_url
         editModeFormData.desc_url = desc_url
         editModeFormData.banner_url = banner_url
+        // console.log('editModeFormData => ', editModeFormData)
         setFormData(editModeFormData)
         form.setFieldsValue(editModeFormData)
       } else {
@@ -306,63 +299,39 @@ const AEGModal: FC<LocalProps> = (props) => {
           colon={false}
           size="middle"
           autoComplete="off"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 21 }}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
           initialValues={formData}
         >
           <Form.Item
             validateFirst
-            label="商品名称"
-            name="name"
+            label="商品名称(中文)"
+            name="name_zh"
             rules={[
-              { required: true, message: '请输入商品名称' },
+              { required: true, message: '请输入中文名称' },
               { type: 'string', whitespace: true, message: '不能只输入空格符' }
             ]}
           >
-            <Input placeholder="请输入商品名称" />
+            <Input placeholder="请输入中文名称" />
           </Form.Item>
           <Form.Item
             validateFirst
-            label="商品价格"
+            label="商品名称(英文)"
+            name="name_en"
+            rules={[
+              { required: true, message: '请输入英文名称' },
+              { type: 'string', whitespace: true, message: '不能只输入空格符' }
+            ]}
+          >
+            <Input placeholder="请输入英文名称" />
+          </Form.Item>
+          <Form.Item
+            validateFirst
+            label="商品价格(RMB)"
             name="price"
             rules={[{ required: true, message: '请输入商品价格' }]}
           >
             <InputNumber min={0.01} />
-          </Form.Item>
-          <Form.Item
-            validateFirst
-            label="折扣数量"
-            name="discount_threshold"
-            rules={[{ required: true, message: '到达一定数量后享受折扣价' }]}
-          >
-            <InputNumber
-              min={0}
-              placeholder="等于0时，表示无折扣且详情页中不显示折扣信息"
-            />
-          </Form.Item>
-          <Form.Item
-            validateFirst
-            label="折后价格"
-            name="discount_price"
-            rules={[{ required: true, message: '请输入折后价格' }]}
-          >
-            <InputNumber min={0.01} />
-          </Form.Item>
-          <Form.Item
-            validateFirst
-            label="数量单位"
-            name="count_unit"
-            rules={[{ required: true, message: '请输入商品计量单位' }]}
-          >
-            <Input placeholder="个" />
-          </Form.Item>
-          <Form.Item
-            validateFirst
-            label="货币种类"
-            name="currency_unit"
-            rules={[{ required: true, message: '请输入商品货币种类' }]}
-          >
-            <Input placeholder="￥、$" />
           </Form.Item>
           <Form.Item validateFirst label="主页轮播" name="home_banner">
             <Radio.Group name="home_banner_radio_group">
@@ -459,11 +428,19 @@ const AEGModal: FC<LocalProps> = (props) => {
           </Form.Item>
           <Form.Item
             validateFirst
-            label="商品描述"
-            name="desc"
-            rules={[{ required: true, message: '请输入商品描述' }]}
+            label="中文描述"
+            name="desc_zh"
+            rules={[{ required: true, message: '请输入中文描述' }]}
           >
-            <Input.TextArea rows={5} placeholder="请输入商品描述" />
+            <Input.TextArea rows={5} placeholder="请输入中文描述" />
+          </Form.Item>
+          <Form.Item
+            validateFirst
+            label="英文描述"
+            name="desc_en"
+            rules={[{ required: true, message: '请输入英文描述' }]}
+          >
+            <Input.TextArea rows={5} placeholder="请输入英文描述" />
           </Form.Item>
         </Form>
       </Modal>

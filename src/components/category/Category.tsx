@@ -32,13 +32,27 @@ const Category: FC<RouteComponentProps> = () => {
       title: '序号',
       dataIndex: 'sequence',
       key: 'sequence',
-      align: 'center'
+      align: 'center',
+      width: 50
     },
     {
-      title: '类别名称',
+      title: '类别名称(中文)',
       dataIndex: 'name_zh',
       key: 'name_zh',
       align: 'center',
+      width: 150,
+      render: (text: string, record: Record<string, any>) => (
+        <Link title="跳转至系列" to={`${path}/${record._id}`}>
+          {text}
+        </Link>
+      )
+    },
+    {
+      title: '类别名称(英文)',
+      dataIndex: 'name_en',
+      key: 'name_en',
+      align: 'center',
+      width: 150,
       render: (text: string, record: Record<string, any>) => (
         <Link title="跳转至系列" to={`${path}/${record._id}`}>
           {text}
@@ -49,36 +63,41 @@ const Category: FC<RouteComponentProps> = () => {
       title: '系列数量',
       dataIndex: 'series_count',
       key: 'series_count',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '排序',
       dataIndex: 'no',
       key: 'no',
-      align: 'center'
+      align: 'center',
+      width: 50
     },
     {
       title: '创建时间',
       dataIndex: 'create_time',
       key: 'create_time',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '更新时间',
       dataIndex: 'update_time',
       key: 'update_time',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '描述',
       dataIndex: 'desc',
       key: 'desc',
-      align: 'center'
+      align: 'left'
     },
     {
       title: '操作',
       key: 'action',
       align: 'center',
+      width: 150,
       render: (text: string, record: Required<CategoryT>) => (
         <Space size="small">
           <Button
@@ -127,8 +146,8 @@ const Category: FC<RouteComponentProps> = () => {
   useEffect(() => {
     // console.log('category useEffect');
     if (aecVisible) {
-      const { name, no, desc } = aecData
-      form.setFieldsValue({ name, no, desc })
+      const { name_zh, name_en, no, desc } = aecData
+      form.setFieldsValue({ name_zh, name_en, no, desc })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aecVisible])
@@ -156,7 +175,7 @@ const Category: FC<RouteComponentProps> = () => {
 
   // 编辑 => 弹框
   const handleEditCategory = (record: Required<CategoryT>) => {
-    // console.log('handleEditCategory => ', record);
+    // console.log('handleEditCategory => ', record)
     setAECMode(2)
     setAECData(record)
     setAECVisible(true)
@@ -260,7 +279,7 @@ const Category: FC<RouteComponentProps> = () => {
           </Button>
         </div>
       </header>
-      <section className={styles.section}>
+      <section>
         <Table
           size="middle"
           columns={columns}
@@ -289,14 +308,25 @@ const Category: FC<RouteComponentProps> = () => {
         >
           <Form.Item
             validateFirst
-            label="名称"
-            name="name"
+            label="中文名称"
+            name="name_zh"
             rules={[
-              { required: true, message: '请输入名称' },
+              { required: true, message: '请输入中文名称' },
               { type: 'string', whitespace: true, message: '不能只输入空格符' }
             ]}
           >
-            <Input placeholder="请输入名称" />
+            <Input placeholder="请输入中文名称" />
+          </Form.Item>
+          <Form.Item
+            validateFirst
+            label="英文名称"
+            name="name_en"
+            rules={[
+              { required: true, message: '请输入英文名称' },
+              { type: 'string', whitespace: true, message: '不能只输入空格符' }
+            ]}
+          >
+            <Input placeholder="请输入英文名称" />
           </Form.Item>
           <Form.Item
             validateFirst

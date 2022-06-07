@@ -1,8 +1,7 @@
 export interface IOrder {
   user_id: string
   goods_id: string
-  goods_name_zh: string
-  goods_name_en: string
+  goods_desc_zh: string
   gcount: number
   status: number
   order_status?: string

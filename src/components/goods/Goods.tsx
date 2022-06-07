@@ -65,10 +65,15 @@ const Goods: FC<RouteComponentProps> = () => {
         size="small"
         onClick={() => ovSwitchLang('zh')}
         style={{ marginLeft: '30px', marginRight: '5px' }}
+        className={ovLang === 'zh' ? styles['ov-lang-btn-active'] : ''}
       >
         中文
       </Button>
-      <Button size="small" onClick={() => ovSwitchLang('en')}>
+      <Button
+        size="small"
+        className={ovLang === 'en' ? styles['ov-lang-btn-active'] : ''}
+        onClick={() => ovSwitchLang('en')}
+      >
         英文
       </Button>
     </div>
@@ -259,21 +264,23 @@ const Goods: FC<RouteComponentProps> = () => {
       dataIndex: 'sequence',
       key: 'sequence',
       align: 'center',
+      fixed: 'left',
       width: 50
     },
     {
       title: '中文名称',
       dataIndex: 'name_zh',
       key: 'name_zh',
-      align: 'center',
-      width: 100
+      align: 'left',
+      fixed: 'left',
+      width: 200
     },
     {
       title: '英文名称',
       dataIndex: 'name_en',
       key: 'name_en',
-      align: 'center',
-      width: 100
+      align: 'left',
+      width: 200
     },
     {
       title: '价格(RMB)',
@@ -340,6 +347,7 @@ const Goods: FC<RouteComponentProps> = () => {
       title: '操作',
       key: 'action',
       align: 'center',
+      fixed: 'right',
       width: 150,
       render: (text: string, record: Required<GoodsT>) => (
         <Space size={3}>
@@ -404,9 +412,10 @@ const Goods: FC<RouteComponentProps> = () => {
       <section className={styles.section}>
         <Table
           size="small"
-          loading={fetchGoodsLoading}
           columns={columns}
+          loading={fetchGoodsLoading}
           dataSource={data?.goods ?? []}
+          scroll={{ x: 3000 }}
           rowSelection={{
             type: 'checkbox',
             onChange: (
@@ -465,18 +474,7 @@ const Goods: FC<RouteComponentProps> = () => {
             <div className={styles['price-info']}>
               <span className={styles.price}>￥{ovData.price}</span>
               <span className={styles.unit}>(RMB)</span>
-              {/* <span className={styles.unit}>/{ovData.count_unit}</span> */}
             </div>
-            {/* <div className={styles['price-discount']}>
-              <span>
-                {ovData.currency_unit}
-                {ovData.discount_price}
-              </span>
-              <span>
-                /{ovData.discount_threshold}
-                {ovData.count_unit}
-              </span>
-            </div> */}
             <div className={styles.desc}>
               {`${ovLang}` === 'zh' ? ovData.desc_zh : ovData.desc_en}
             </div>

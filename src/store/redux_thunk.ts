@@ -3,7 +3,7 @@
  * @Email: broli.up.up.up@gmail.com
  * @Date: 2021-09-08 22:58:45
  * @LastEditors: Broli
- * @LastEditTime: 2021-12-22 15:27:07
+ * @LastEditTime: 2022-06-07 16:19:58
  * @Description: 以下两种情况的操作，应在此文件中完成：
  * @Description: redux 中使用的副作用（如：请求）
  * @Description: store 中的公共方法（如：设置全局状态）
@@ -19,14 +19,20 @@ export const fetchCategoryThunk = () => {
   return (dispatch: Dispatch) => {
     return fetchCategories()
       .then((result) => {
-        // console.log('fetchCategoryThunk => ', result);
+        // console.log('fetchCategoryThunk => ', result)
         const {
           data: { res }
         } = result
         const refineData = res.map((item: CategoryT, index: number) => {
-          const { _id: key, name, series_data, create_time, update_time } = item
+          const {
+            _id: key,
+            name_zh: name,
+            series_data,
+            create_time,
+            update_time
+          } = item
           series_data.forEach((s) => {
-            s.label = s.name
+            s.label = s.name_zh
             s.value = s._id
           })
           return {

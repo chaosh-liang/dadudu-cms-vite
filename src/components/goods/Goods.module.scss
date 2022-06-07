@@ -32,6 +32,16 @@
   }
   .section {
     flex: 1;
+    :global {
+      .ant-table {
+        table {
+          min-height: 600px;
+        }
+        .ant-table-thead tr th {
+          text-align: center !important;
+        }
+      }
+    }
   }
   .phone-emulator {
     width: 375px;
@@ -97,16 +107,6 @@
           font-weight: 600;
           color: rgb(239, 14, 59);
         }
-        .unit {
-          font-size: 12px;
-          color: #6c6c6c;
-          margin-left: 3px;
-        }
-      }
-      .price-discount {
-        font-size: 12px;
-        color: #6c6c6c;
-        margin-left: 3px;
       }
       .desc {
         font-size: 16px;
@@ -127,4 +127,9 @@
       }
     }
   }
+}
+
+.ov-lang-btn-active {
+  color: #40a9ff;
+  border-color: #40a9ff;
 }
