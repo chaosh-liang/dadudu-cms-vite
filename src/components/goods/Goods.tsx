@@ -118,7 +118,12 @@ const Goods: FC<RouteComponentProps> = () => {
             update_time: update_time && formatDate(update_time)
           }
         })
-        return { goods, total, page_index, page_size }
+        return {
+          goods,
+          total,
+          page_index,
+          page_size
+        }
       },
       onError(error) {
         console.log('Goods.tsx fetchGoods error => ', error)

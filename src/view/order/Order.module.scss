@@ -34,10 +34,10 @@
   }
   .section {
     flex: 1;
-    :global {
-      .ant-table table {
-        min-height: 600px;
-      }
-    }
+    // :global {
+    // .ant-table table {
+    //   min-height: 600px;
+    // }
+    // }
   }
 }

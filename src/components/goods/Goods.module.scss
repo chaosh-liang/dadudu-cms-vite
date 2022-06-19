@@ -34,9 +34,9 @@
     flex: 1;
     :global {
       .ant-table {
-        table {
-          min-height: 600px;
-        }
+        // table {
+        // min-height: 600px;
+        // }
         .ant-table-thead tr th {
           text-align: center !important;
         }
