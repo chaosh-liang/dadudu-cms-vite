@@ -22,6 +22,7 @@ const Order: FC<RouteComponentProps> = () => {
   const defaultFormData = {
     user_id: '',
     goods_id: '',
+    goods_name_zh: '',
     goods_desc_zh: '',
     gcount: 1,
     status: 1,
@@ -289,7 +290,7 @@ const Order: FC<RouteComponentProps> = () => {
           <Form.Item label="用户昵称" name="nick_name">
             <Input disabled />
           </Form.Item>
-          <Form.Item label="商品名称" name="goods_name">
+          <Form.Item label="商品名称" name="goods_name_zh">
             <Input disabled />
           </Form.Item>
           <Form.Item label="订单状态" name="status">
